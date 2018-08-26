@@ -1,0 +1,53 @@
+--- Model
+
+Selected Cards: Let Variable with Array of 3 cards?
+Cards Being Played
+Deck of Cards
+see if currently selected cards are matched
+keeps track of all the cards has been matched?
+
+select a card
+deselect a card, when only one or two cards are selected
+
+deal 3 cards
+
+Set init with a string of characters
+  - 12 Cards at the start
+  - Will have 81 cards in the deck, and then shuffle cards
+
+enum with
+  shape
+  card
+  other properties
+  matched - Bool see if the card is in the matching selected cards
+for a Card?
+
+If card chosen is one of the 3 matching cards, no card should be selected, nothing should be done
+
+// later
+Use score
+3 points for match
+-5 for mismatch
+-1 deselection
+
+
+--- Controller
+
+first makes sure if if button is enabled or disabled
+  - Enabled: If 3 selected cards are matched, even if no more cards are in the deck or number of cards is 24
+  - Disabled: If no more cards in the deck
+  - Disabled: If number of playing cards is 24.
+
+When button is enabled and When the Deal 3 more cards button is pressed:
+  call model: replace the selected cards if they are match or add 3 more games
+
+// Should be in Controller but how?
+When 3 cards selected, match or mismatch (true or false) by the set rules
+
+If 3 cards mismatched and select a new card that is not selected, deselect those 3 non-matching and select chosen card
+If 3 cards matched and select a new card that is not in selected, select chosen card
+  replace those 3 cards if there are remaining cards in the deck
+  if no more remaining cards in the deck, then hide in UI(clear UI card)
+
+--- View
+fit only 24 cards on screen
