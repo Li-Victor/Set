@@ -17,30 +17,9 @@ struct Set {
         return playingCards.filter { $0.selected }
     }
 
-    private func numberCondition(_ firstCard: Card, _ secondCard: Card, _ thirdCard: Card) -> Bool {
-        return (firstCard.number == secondCard.number && firstCard.number == thirdCard.number && secondCard.number == thirdCard.number)
-            || (firstCard.number != secondCard.number && firstCard.number != thirdCard.number && secondCard.number != thirdCard.number)
-    }
-
-    private func symbolCondition(_ firstCard: Card, _ secondCard: Card, _ thirdCard: Card) -> Bool {
-        return (firstCard.symbol == secondCard.symbol && firstCard.symbol == thirdCard.symbol && secondCard.symbol == thirdCard.symbol)
-            || (firstCard.symbol != secondCard.symbol && firstCard.symbol != thirdCard.symbol && secondCard.symbol != thirdCard.symbol)
-    }
-
-    private func shadingCondition(_ firstCard: Card, _ secondCard: Card, _ thirdCard: Card) -> Bool {
-        return (firstCard.shading == secondCard.shading && firstCard.shading == thirdCard.shading && secondCard.shading == thirdCard.shading)
-            || (firstCard.shading != secondCard.shading && firstCard.shading != thirdCard.shading && secondCard.shading != thirdCard.shading)
-    }
-
-    private func colorCondition(_ firstCard: Card, _ secondCard: Card, _ thirdCard: Card) -> Bool {
-        return (firstCard.color == secondCard.color && firstCard.color == thirdCard.color && secondCard.color == thirdCard.color)
-            || (firstCard.color != secondCard.color && firstCard.color != thirdCard.color && secondCard.color != thirdCard.color)
-    }
-
     private func checkMatchingFrom(firstCard: Card, secondCard: Card, thirdCard: Card) -> Bool {
-//        return numberCondition(firstCard, secondCard, thirdCard) && symbolCondition(firstCard, secondCard, thirdCard)
-//            && shadingCondition(firstCard, secondCard, thirdCard) && colorCondition(firstCard, secondCard, thirdCard)
-        return true
+        return firstCard.makesSetWith(secondCard, thirdCard)
+        // return true
     }
 
     func getMatchingCards() -> [Card] {
@@ -147,16 +126,8 @@ struct Set {
         matchedCards.append(onecard)
     }
 
-    init(numbers: [Int], symbols: [String], shadings: [String], colors: [String]) {
-        for number in numbers {
-            for symbol in symbols {
-                for shading in shadings {
-                    for color in colors {
-                        deck.append(Card(number: number, symbol: symbol, shading: shading, color: color))
-                    }
-                }
-            }
-        }
+    init(deck: [Card]) {
+        self.deck = deck
 
         self.reset()
     }
