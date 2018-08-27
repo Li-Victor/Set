@@ -30,7 +30,11 @@ class ViewController: UIViewController {
     }
     
     @IBAction private func touchDeal3MoreCards() {
-        
+        guard SetGame.playingCards.count < 24 else {
+            print("Deal 3 More Cards Button should be disabled and nothing should happen")
+            return
+        }
+        SetGame.deal3MoreCards()
         updateViewFromModel()
     }
     
@@ -89,11 +93,21 @@ class ViewController: UIViewController {
         return NSAttributedString(string: string, attributes: attributes)
     }
     
+    private func matchingSelectedCards() -> Bool {
+        let selectedCards = SetGame.playingCards.filter { $0.selected }
+        guard selectedCards.count == 3 else {
+            return false
+        }
+        
+        return selectedCards[0].makesSetWith(selectedCards[1], selectedCards[2])
+    }
+    
     private func updateViewFromModel() {
         var i = 0
         for card in SetGame.playingCards {
             let button = cardButtons[i]
             button.layer.cornerRadius = 8.0
+            button.backgroundColor = #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
             let attributedString = getAttributedString(card)
         
             button.setAttributedTitle(attributedString, for: UIControlState.normal)
@@ -106,6 +120,17 @@ class ViewController: UIViewController {
                 button.layer.borderColor = UIColor.white.cgColor
             }
             i += 1
+        }
+        
+        // enable or disable Deal3MoreCards button
+        if (SetGame.playingCards.count < 24 && SetGame.deck.count > 0) || (matchingSelectedCards()) {
+            Deal3MoreCardsButton.isEnabled = true
+            Deal3MoreCardsButton.backgroundColor = #colorLiteral(red: 0, green: 0.4705882353, blue: 0.7607843137, alpha: 1)
+            Deal3MoreCardsButton.setTitleColor(#colorLiteral(red: 0.9098039216, green: 0.9490196078, blue: 0.9725490196, alpha: 1), for: .normal)
+        } else {
+            Deal3MoreCardsButton.isEnabled = false
+            Deal3MoreCardsButton.backgroundColor = #colorLiteral(red: 0.6901960784, green: 0.7882352941, blue: 0.8431372549, alpha: 1)
+            Deal3MoreCardsButton.setTitleColor(#colorLiteral(red: 0.8392156863, green: 0.8901960784, blue: 0.9294117647, alpha: 1), for: .normal)
         }
         
         for index in i..<cardButtons.count {
