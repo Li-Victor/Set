@@ -15,15 +15,28 @@ class ViewController: UIViewController {
     private lazy var SetGame = setupGame()
     
     @IBAction private func touchCard(_ sender: UIButton) {
+        guard let index = cardButtons.index(of: sender) else {
+            print("chosen card was not in cardButtons")
+            return
+        }
         
+        guard index < SetGame.playingCards.count else {
+            // the index of the card should be within the playing cards count
+            return
+        }
+        
+        SetGame.chooseCard(at: index)
+        updateViewFromModel()
     }
     
     @IBAction private func touchDeal3MoreCards() {
         
+        updateViewFromModel()
     }
     
     @IBAction private func touchNewGame() {
         
+        updateViewFromModel()
     }
     
     private func setupGame() -> Set {
@@ -84,6 +97,14 @@ class ViewController: UIViewController {
             let attributedString = getAttributedString(card)
         
             button.setAttributedTitle(attributedString, for: UIControlState.normal)
+            
+            if card.selected {
+                button.layer.borderWidth = 3.0
+                button.layer.borderColor = UIColor.blue.cgColor
+            } else {
+                button.layer.borderWidth = 0.0
+                button.layer.borderColor = UIColor.white.cgColor
+            }
             i += 1
         }
         
