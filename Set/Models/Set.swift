@@ -18,8 +18,8 @@ struct Set {
     }
 
     private func checkMatchingFrom(firstCard: Card, secondCard: Card, thirdCard: Card) -> Bool {
-        return firstCard.makesSetWith(secondCard, thirdCard)
-        // return true
+        // return firstCard.makesSetWith(secondCard, thirdCard)
+        return true
     }
 
     func getMatchingCards() -> [Card] {
@@ -114,7 +114,7 @@ struct Set {
             deck[i].matched = false
             deck[i].selected = false
         }
-        // deck.shuffle()
+        deck.shuffle()
 
         for _ in 1...12 {
             disperseToPlayingCards()
@@ -123,7 +123,7 @@ struct Set {
 
     mutating func disperseToPlayingCards() {
         let onecard = deck.removeFirst()
-        matchedCards.append(onecard)
+        playingCards.append(onecard)
     }
 
     init(deck: [Card]) {
