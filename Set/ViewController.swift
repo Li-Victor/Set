@@ -11,7 +11,20 @@ import UIKit
 class ViewController: UIViewController {
 
     @IBOutlet private var cardButtons: [UIButton]!
+    @IBOutlet private weak var Deal3MoreCardsButton: UIButton!
     private lazy var SetGame = setupGame()
+    
+    @IBAction private func touchCard(_ sender: UIButton) {
+        
+    }
+    
+    @IBAction private func touchDeal3MoreCards() {
+        
+    }
+    
+    @IBAction private func touchNewGame() {
+        
+    }
     
     private func setupGame() -> Set {
         var deck = [Card]()
@@ -63,15 +76,13 @@ class ViewController: UIViewController {
         return NSAttributedString(string: string, attributes: attributes)
     }
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        
+    private func updateViewFromModel() {
         var i = 0
         for card in SetGame.playingCards {
             let button = cardButtons[i]
             button.layer.cornerRadius = 8.0
             let attributedString = getAttributedString(card)
-            
+        
             button.setAttributedTitle(attributedString, for: UIControlState.normal)
             i += 1
         }
@@ -81,6 +92,12 @@ class ViewController: UIViewController {
             button.layer.cornerRadius = 8.0
             button.backgroundColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)
         }
+    }
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        updateViewFromModel()
     }
 
 }
