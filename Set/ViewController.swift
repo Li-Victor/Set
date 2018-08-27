@@ -39,7 +39,7 @@ class ViewController: UIViewController {
     }
     
     @IBAction private func touchNewGame() {
-        
+        SetGame.reset()
         updateViewFromModel()
     }
     
@@ -137,6 +137,8 @@ class ViewController: UIViewController {
             let button = cardButtons[index]
             button.layer.cornerRadius = 8.0
             button.backgroundColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)
+            button.setAttributedTitle(nil, for: .normal)
+            button.setTitle(nil, for: .normal)
         }
     }
     
