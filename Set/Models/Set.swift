@@ -12,24 +12,102 @@ struct Set {
     private(set) var playingCards: [Card] = []
     private(set) var deck: [Card] = []
     private(set) var matchedCards: [Card] = []
+    private(set) var score = 0
+    
+    init(deck: [Card]) {
+        self.deck = deck
+        
+        self.reset()
+    }
 
-    private func getSelectedAndNotMatchedCards() -> [Card] {
+
+    func getSelectedAndNotMatchedCards() -> [Card] {
         return playingCards.filter { $0.selected && !$0.matched }
     }
-
-    private func checkMatchingFrom(firstCard: Card, secondCard: Card, thirdCard: Card) -> Bool {
-        return firstCard.makesSetWith(secondCard, thirdCard)
-    }
-
+    
     func getMatchingCards() -> [Card] {
         let matched = matchedCards
         let matchedPlayingCards = playingCards.filter { $0.matched }
         return matched + matchedPlayingCards
     }
-
+    
     mutating func threeNewCards() -> (Card, Card, Card) {
         assert(deck.count > 0, "threeNewCards function: There cannot be three new cards when there are no more cards in the deck")
         return (deck.removeFirst(), deck.removeFirst(), deck.removeFirst())
+    }
+    
+    // deselect or select card
+    mutating func chooseCard(at index: Int) {
+        let selectedCards = getSelectedAndNotMatchedCards()
+        
+        if playingCards[index].selected {
+            // deselecting
+            if selectedCards.count == 1 || selectedCards.count == 2 {
+                score -= 1
+                playingCards[index].selected = false
+                return
+            }
+            // if selected count is 3, nothing goes on
+            
+        } else {
+            // choosing a non-selected card and there are already 3 selected cards
+            if selectedCards.count == 3 {
+                if checkMatchingFrom(firstCard: selectedCards[0], secondCard: selectedCards[1], thirdCard: selectedCards[2]) {
+                    // replace the three selected cards
+                    replace(cards: selectedCards)
+                    score += 3
+                } else {
+                    // the 3 selected cards are not matched
+                    score -= 5
+                    for i in playingCards.indices {
+                        playingCards[i].selected = false
+                    }
+                }
+            }
+            playingCards[index].selected = true
+        }
+    }
+    
+    mutating func deal3MoreCards() {
+        let selectedCards = getSelectedAndNotMatchedCards()
+        if selectedCards.count == 3, checkMatchingFrom(firstCard: selectedCards[0], secondCard: selectedCards[1], thirdCard: selectedCards[2]) {
+            // replace the playingCards that are matched
+            replace(cards: selectedCards)
+            score += 3
+        } else {
+            // take 3 cards from the deck and put into playingCards
+            for _ in 1...3 {
+                disperseToPlayingCards()
+            }
+        }
+    }
+    
+    mutating func reset() {
+        // put matchedCards and playingCards in deck
+        deck.append(contentsOf: matchedCards)
+        deck.append(contentsOf: playingCards)
+        matchedCards.removeAll()
+        playingCards.removeAll()
+        
+        for i in deck.indices {
+            deck[i].matched = false
+            deck[i].selected = false
+        }
+        deck.shuffle()
+        
+        for _ in 1...12 {
+            disperseToPlayingCards()
+        }
+        score = 0
+    }
+    
+    mutating func disperseToPlayingCards() {
+        let onecard = deck.removeFirst()
+        playingCards.append(onecard)
+    }
+
+    private func checkMatchingFrom(firstCard: Card, secondCard: Card, thirdCard: Card) -> Bool {
+        return firstCard.makesSetWith(secondCard, thirdCard)
     }
 
     private mutating func replace(cards: [Card]) {
@@ -57,78 +135,6 @@ struct Set {
         playingCards[firstIndex] = firstNewCard
         playingCards[secondIndex] = secondNewCard
         playingCards[thirdIndex] = thirdNewCard
-    }
-
-    // deselect or select card
-    mutating func chooseCard(at index: Int) {
-        let selectedCards = getSelectedAndNotMatchedCards()
-
-        if playingCards[index].selected {
-            // deselecting
-            if selectedCards.count == 1 || selectedCards.count == 2 {
-
-                playingCards[index].selected = false
-                return
-            }
-            // if selected count is 3, nothing goes on
-
-        } else {
-            // choosing a non-selected card and there are already 3 selected cards
-            if selectedCards.count == 3 {
-                if checkMatchingFrom(firstCard: selectedCards[0], secondCard: selectedCards[1], thirdCard: selectedCards[2]) {
-                    // replace the three selected cards
-                    replace(cards: selectedCards)
-                } else {
-                    // the 3 selected cards are not matched
-                    for i in playingCards.indices {
-                        playingCards[i].selected = false
-                    }
-                }
-            }
-            playingCards[index].selected = true
-        }
-    }
-
-    mutating func deal3MoreCards() {
-        let selectedCards = getSelectedAndNotMatchedCards()
-        if selectedCards.count == 3, checkMatchingFrom(firstCard: selectedCards[0], secondCard: selectedCards[1], thirdCard: selectedCards[2]) {
-            // replace the playingCards that are matched
-            replace(cards: selectedCards)
-        } else {
-            // take 3 cards from the deck and put into playingCards
-            for _ in 1...3 {
-                disperseToPlayingCards()
-            }
-        }
-    }
-
-    mutating func reset() {
-        // put matchedCards and playingCards in deck
-        deck.append(contentsOf: matchedCards)
-        deck.append(contentsOf: playingCards)
-        matchedCards.removeAll()
-        playingCards.removeAll()
-
-        for i in deck.indices {
-            deck[i].matched = false
-            deck[i].selected = false
-        }
-        deck.shuffle()
-
-        for _ in 1...12 {
-            disperseToPlayingCards()
-        }
-    }
-
-    mutating func disperseToPlayingCards() {
-        let onecard = deck.removeFirst()
-        playingCards.append(onecard)
-    }
-
-    init(deck: [Card]) {
-        self.deck = deck
-
-        self.reset()
     }
 }
 

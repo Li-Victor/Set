@@ -12,6 +12,7 @@ class ViewController: UIViewController {
 
     @IBOutlet private var cardButtons: [UIButton]!
     @IBOutlet private weak var Deal3MoreCardsButton: UIButton!
+    @IBOutlet weak var scoreLabel: UILabel!
     private lazy var SetGame = setupGame()
     
     @IBAction private func touchCard(_ sender: UIButton) {
@@ -88,7 +89,7 @@ class ViewController: UIViewController {
     }
     
     private func matchingSelectedCards() -> Bool {
-        let selectedCards = SetGame.playingCards.filter { $0.selected && !$0.matched }
+        let selectedCards = SetGame.getSelectedAndNotMatchedCards()
         guard selectedCards.count == 3 else {
             return false
         }
@@ -99,6 +100,7 @@ class ViewController: UIViewController {
     private func updateViewFromModel() {
         var i = 0
         let matchingCards = matchingSelectedCards()
+        scoreLabel.text = "Score: \(SetGame.score)"
         
         for card in SetGame.playingCards {
             let button = cardButtons[i]

@@ -254,6 +254,7 @@
                     </view>
                     <connections>
                         <outlet property="Deal3MoreCardsButton" destination="kUr-CK-jFd" id="Tvp-XS-b8W"/>
+                        <outlet property="scoreLabel" destination="LL6-5W-Nmr" id="e0m-3X-HP5"/>
                         <outletCollection property="cardButtons" destination="2OK-bf-oug" collectionClass="NSMutableArray" id="CUN-wN-mOy"/>
                         <outletCollection property="cardButtons" destination="UvN-OA-3Gb" collectionClass="NSMutableArray" id="zRd-Wi-dec"/>
                         <outletCollection property="cardButtons" destination="w7e-Ru-yOA" collectionClass="NSMutableArray" id="0aO-u5-L5w"/>
