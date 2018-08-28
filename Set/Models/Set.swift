@@ -18,8 +18,7 @@ struct Set {
     }
 
     private func checkMatchingFrom(firstCard: Card, secondCard: Card, thirdCard: Card) -> Bool {
-        // return firstCard.makesSetWith(secondCard, thirdCard)
-        return true
+        return firstCard.makesSetWith(secondCard, thirdCard)
     }
 
     func getMatchingCards() -> [Card] {
@@ -30,7 +29,7 @@ struct Set {
 
     mutating func threeNewCards() -> (Card, Card, Card) {
         assert(deck.count > 0, "threeNewCards function: There cannot be three new cards when there are no more cards in the deck")
-        return (playingCards.removeFirst(), playingCards.removeFirst(), playingCards.removeFirst())
+        return (deck.removeFirst(), deck.removeFirst(), deck.removeFirst())
     }
 
     private mutating func replace(cards: [Card]) {
@@ -47,7 +46,7 @@ struct Set {
         playingCards[firstIndex].matched = true
         playingCards[secondIndex].matched = true
         playingCards[thirdIndex].matched = true
-
+        
         // set matched and put those the three cards into matchCards
         guard deck.count > 0 else {
             return

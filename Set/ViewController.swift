@@ -30,7 +30,7 @@ class ViewController: UIViewController {
     }
     
     @IBAction private func touchDeal3MoreCards() {
-        guard SetGame.playingCards.count < 24 else {
+        guard SetGame.playingCards.count < 24 || matchingSelectedCards() else {
             print("Deal 3 More Cards Button should be disabled and nothing should happen")
             return
         }
@@ -108,11 +108,23 @@ class ViewController: UIViewController {
         
         for card in SetGame.playingCards {
             let button = cardButtons[i]
+            i += 1
+            
+            
+            if SetGame.deck.count == 0, card.matched {
+                print(SetGame.playingCards.count)
+                button.isEnabled = false
+                button.layer.borderColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)
+                button.backgroundColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)
+                button.setAttributedTitle(nil, for: .normal)
+                button.setTitle(nil, for: .normal)
+                continue
+            }
+            
             button.layer.cornerRadius = 8.0
             button.backgroundColor = #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
             let attributedString = getAttributedString(card)
-        
-            button.setAttributedTitle(attributedString, for: UIControlState.normal)
+            button.setAttributedTitle(attributedString, for: .normal)
             
             if card.selected {
                 button.layer.borderWidth = 3.0
@@ -121,7 +133,6 @@ class ViewController: UIViewController {
                 button.layer.borderWidth = 0.0
                 button.layer.borderColor = UIColor.white.cgColor
             }
-            i += 1
         }
         
         // enable or disable Deal3MoreCards button
