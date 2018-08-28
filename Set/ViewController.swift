@@ -112,7 +112,6 @@ class ViewController: UIViewController {
             
             
             if SetGame.deck.count == 0, card.matched {
-                print(SetGame.playingCards.count)
                 button.isEnabled = false
                 button.layer.borderColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)
                 button.backgroundColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)
@@ -136,7 +135,7 @@ class ViewController: UIViewController {
         }
         
         // enable or disable Deal3MoreCards button
-        if (SetGame.playingCards.count < 24 && SetGame.deck.count > 0) || matchingCards {
+        if  SetGame.deck.count > 0 && (SetGame.playingCards.count < 24 || matchingCards) {
             Deal3MoreCardsButton.isEnabled = true
             Deal3MoreCardsButton.backgroundColor = #colorLiteral(red: 0, green: 0.4705882353, blue: 0.7607843137, alpha: 1)
             Deal3MoreCardsButton.setTitleColor(#colorLiteral(red: 0.9098039216, green: 0.9490196078, blue: 0.9725490196, alpha: 1), for: .normal)
