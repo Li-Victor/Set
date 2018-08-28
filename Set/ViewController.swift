@@ -69,16 +69,10 @@ class ViewController: UIViewController {
         }
         
         switch shading {
-        case .open: attributes = [
-            .strokeWidth: 5.0,
-            .strokeColor: uiColor
-            ]
-        case .solid: attributes = [
-            .foregroundColor: uiColor.withAlphaComponent(1)
-            ]
-        case .striped: attributes = [
-            .foregroundColor: uiColor.withAlphaComponent(0.15)
-            ]
+        case .open: attributes = [.strokeWidth: 5.0, .strokeColor: uiColor]
+        case .solid:
+            attributes = [.foregroundColor: uiColor.withAlphaComponent(1)]
+        case .striped: attributes = [.foregroundColor: uiColor.withAlphaComponent(0.15)]
         }
         
         return attributes
@@ -94,7 +88,7 @@ class ViewController: UIViewController {
     }
     
     private func matchingSelectedCards() -> Bool {
-        let selectedCards = SetGame.playingCards.filter { $0.selected }
+        let selectedCards = SetGame.playingCards.filter { $0.selected && !$0.matched }
         guard selectedCards.count == 3 else {
             return false
         }
@@ -110,7 +104,6 @@ class ViewController: UIViewController {
             let button = cardButtons[i]
             i += 1
             
-            
             if SetGame.deck.count == 0, card.matched {
                 button.isEnabled = false
                 button.layer.borderColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)
@@ -120,6 +113,7 @@ class ViewController: UIViewController {
                 continue
             }
             
+            button.isEnabled = true
             button.layer.cornerRadius = 8.0
             button.backgroundColor = #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
             let attributedString = getAttributedString(card)
@@ -147,7 +141,8 @@ class ViewController: UIViewController {
         
         for index in i..<cardButtons.count {
             let button = cardButtons[index]
-            button.layer.cornerRadius = 8.0
+            button.isEnabled = false
+            button.layer.borderColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)
             button.backgroundColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)
             button.setAttributedTitle(nil, for: .normal)
             button.setTitle(nil, for: .normal)

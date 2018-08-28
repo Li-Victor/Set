@@ -13,8 +13,8 @@ struct Set {
     private(set) var deck: [Card] = []
     private(set) var matchedCards: [Card] = []
 
-    private func getSelectedCards() -> [Card] {
-        return playingCards.filter { $0.selected }
+    private func getSelectedAndNotMatchedCards() -> [Card] {
+        return playingCards.filter { $0.selected && !$0.matched }
     }
 
     private func checkMatchingFrom(firstCard: Card, secondCard: Card, thirdCard: Card) -> Bool {
@@ -61,7 +61,7 @@ struct Set {
 
     // deselect or select card
     mutating func chooseCard(at index: Int) {
-        let selectedCards = getSelectedCards()
+        let selectedCards = getSelectedAndNotMatchedCards()
 
         if playingCards[index].selected {
             // deselecting
@@ -90,7 +90,7 @@ struct Set {
     }
 
     mutating func deal3MoreCards() {
-        let selectedCards = getSelectedCards()
+        let selectedCards = getSelectedAndNotMatchedCards()
         if selectedCards.count == 3, checkMatchingFrom(firstCard: selectedCards[0], secondCard: selectedCards[1], thirdCard: selectedCards[2]) {
             // replace the playingCards that are matched
             replace(cards: selectedCards)
