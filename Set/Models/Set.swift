@@ -29,11 +29,11 @@ struct Set {
     }
 
     mutating func threeNewCards() -> (Card, Card, Card) {
-        assert(playingCards.count == 0, "threeNewCards function: There cannot be three new cards when there are no more cards in the deck")
+        assert(deck.count > 0, "threeNewCards function: There cannot be three new cards when there are no more cards in the deck")
         return (playingCards.removeFirst(), playingCards.removeFirst(), playingCards.removeFirst())
     }
 
-    mutating func replace(cards: [Card]) {
+    private mutating func replace(cards: [Card]) {
         guard cards.count == 3 else {
             print("There has to be 3 selected cards")
             return

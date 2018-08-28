@@ -104,6 +104,8 @@ class ViewController: UIViewController {
     
     private func updateViewFromModel() {
         var i = 0
+        let matchingCards = matchingSelectedCards()
+        
         for card in SetGame.playingCards {
             let button = cardButtons[i]
             button.layer.cornerRadius = 8.0
@@ -114,7 +116,7 @@ class ViewController: UIViewController {
             
             if card.selected {
                 button.layer.borderWidth = 3.0
-                button.layer.borderColor = UIColor.blue.cgColor
+                button.layer.borderColor = matchingCards ? UIColor.green.cgColor : UIColor.blue.cgColor
             } else {
                 button.layer.borderWidth = 0.0
                 button.layer.borderColor = UIColor.white.cgColor
@@ -123,7 +125,7 @@ class ViewController: UIViewController {
         }
         
         // enable or disable Deal3MoreCards button
-        if (SetGame.playingCards.count < 24 && SetGame.deck.count > 0) || (matchingSelectedCards()) {
+        if (SetGame.playingCards.count < 24 && SetGame.deck.count > 0) || matchingCards {
             Deal3MoreCardsButton.isEnabled = true
             Deal3MoreCardsButton.backgroundColor = #colorLiteral(red: 0, green: 0.4705882353, blue: 0.7607843137, alpha: 1)
             Deal3MoreCardsButton.setTitleColor(#colorLiteral(red: 0.9098039216, green: 0.9490196078, blue: 0.9725490196, alpha: 1), for: .normal)

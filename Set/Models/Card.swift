@@ -20,7 +20,8 @@ struct Card: Equatable {
     }
     
     func makesSetWith(_ firstCard: Card, _ secondCard: Card) -> Bool {
-        return numberCondition(self, firstCard, secondCard) && symbolCondition(self, firstCard, secondCard) && shadingCondition(self, firstCard, secondCard) && colorCondition(self, firstCard, secondCard)
+//        return numberCondition(self, firstCard, secondCard) && symbolCondition(self, firstCard, secondCard) && shadingCondition(self, firstCard, secondCard) && colorCondition(self, firstCard, secondCard)
+        return true
     }
     
     private func numberCondition(_ firstCard: Card, _ secondCard: Card, _ thirdCard: Card) -> Bool {
